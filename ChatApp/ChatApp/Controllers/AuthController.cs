@@ -23,7 +23,15 @@ namespace ChatApp.Controllers
         [Route("token")]
         public async Task<IActionResult> Login([FromBody] AuthSignInModel model)
         {
-            _userRepository.AddUser(new User { Id = Guid.NewGuid(), Username = model.Username });
+            try
+            {
+                _userRepository.AddUser(new User { Id = Guid.NewGuid(), Username = model.Username });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             JWTTokenStatusResult result = await _authorizationService.GenerateTokenAsync(model.Username);
             return Ok(result);
         }

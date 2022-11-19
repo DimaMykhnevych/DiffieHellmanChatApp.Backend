@@ -1,3 +1,4 @@
+using ChatApp.Algorithms;
 using ChatApp.Factories.AuthTokenFactory;
 using ChatApp.Hubs;
 using ChatApp.Models;
@@ -51,6 +52,7 @@ builder.Services.AddTransient<IAuthTokenFactory, AuthTokenFactory>();
 builder.Services.AddTransient<BaseAuthorizationService, AppUserAuthorizationService>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<ChatParticipantsRepository>();
+builder.Services.AddSingleton<DiffieHellman>();
 
 var app = builder.Build();
 
@@ -78,6 +80,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
     endpoints.MapHub<ChatHub>("/hubs/chat");
+    endpoints.MapHub<KeyExchangeHub>("/hubs/key-exchange");
 });
 
 app.Run();

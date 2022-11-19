@@ -18,7 +18,20 @@ namespace ChatApp.Repositories
 
         public void AddUser(User user)
         {
+            if(_users.Count(u => u.Username == user.Username) > 0)
+            {
+                throw new Exception("Username already taken");
+            }
             _users.Add(user);
+        }
+
+        public void DeleteUser(string username)
+        {
+            var user = _users.FirstOrDefault(u => u.Username == username);
+            if(user != null)
+            {
+                _users.Remove(user);
+            }
         }
     }
 }
